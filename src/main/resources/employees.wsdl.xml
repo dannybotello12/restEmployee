@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://spring.io/guides/gs-producing-web-service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://spring.io/guides/gs-producing-web-service" targetNamespace="http://spring.io/guides/gs-producing-web-service">
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://spring.io/guides/gs-producing-web-service">
+
+    <xs:element name="setEmployeeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="employee" type="tns:employee"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="setEmployeeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="employee" type="tns:resultEmployee"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="employee">
+        <xs:sequence>
+                 <xs:element name="names" type="xs:string"/>
+                <xs:element name="surnames" type="xs:string"/>
+                <xs:element name="typeDocument" type="xs:string"/>
+                <xs:element name="numberDocument" type="xs:string"/>
+                <xs:element name="birthday" type="xs:string"/>
+                <xs:element name="dateOfBonding" type="xs:string"/>
+                <xs:element name="position" type="xs:string"/>
+                <xs:element name="salary" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="resultEmployee">
+        <xs:sequence>
+                <xs:element name="names" type="xs:string"/>
+                <xs:element name="bondingTime" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+
+   
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="setEmployeeResponse">
+    <wsdl:part element="tns:setEmployeeResponse" name="setEmployeeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setEmployeeRequest">
+    <wsdl:part element="tns:setEmployeeRequest" name="setEmployeeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="EmployeesPort">
+    <wsdl:operation name="setEmployee">
+      <wsdl:input message="tns:setEmployeeRequest" name="setEmployeeRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:setEmployeeResponse" name="setEmployeeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EmployeesPortSoap11" type="tns:EmployeesPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="setEmployee">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="setEmployeeRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setEmployeeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EmployeesPortService">
+    <wsdl:port binding="tns:EmployeesPortSoap11" name="EmployeesPortSoap11">
+      <soap:address location="http://localhost:8080/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
