@@ -24,7 +24,10 @@ import com.rest.employee.repositories.EmployeeClient;
 public class EmployeeService {
 	
 
-	 @Autowired
+	 private static final int ADULTAGE = 18;
+
+
+	@Autowired
  	 private  EmployeeClient employeeclient ;
 	 
 	 
@@ -35,7 +38,9 @@ public class EmployeeService {
 	  public ResponseDto saveEmployeed(EmployeeDto employee  ) 
 	  {	 
 		  
-		  if (!validationAge(employee.getBirtDate())) {
+		  Integer age = validationAge(employee.getBirtDate());
+		  
+		  if (age < ADULTAGE) {
 			  
 			  throw new AgeException (employee.getBirtDate());
 			
@@ -46,9 +51,9 @@ public class EmployeeService {
 		  
 		  ResponseDto response= new ResponseDto();
 		  
-		  response.setNames(employee.getNames());
+		  response.setNames(employee.getNames()+" " + employee.getLastNames() );
 		  response.setBondingTime(setDiffDate(employee.getStartDate()));
-		  
+		  response.setAge(age);
 		  
 		  
 		  
@@ -57,7 +62,7 @@ public class EmployeeService {
 	  }
 	  
 	  
-	  private boolean validationAge(String birthdate)
+	  private Integer validationAge(String birthdate)
 	  {
 		  
 		DateTimeFormatter patternDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -66,7 +71,7 @@ public class EmployeeService {
 
   		Period periodo = Period.between(birthdateLocal, dateNow);
   		
-  		return birthdate != null && periodo.getYears() >= 18;
+  		return  periodo.getYears() ;
 	  }
 	  
 	  
@@ -76,7 +81,7 @@ public class EmployeeService {
 	        ChronoLocalDate from = ChronoLocalDate.from(formatter.parse(startDate));
 	        ChronoLocalDate to = ChronoLocalDate.from(LocalDate.now());
 	        ChronoPeriod period = ChronoPeriod.between(from, to);
-	        return  period.get(YEARS) +" años,"+ period.get(MONTHS)+"  meses y "+  period.get(DAYS) + " días";
+	        return  period.get(YEARS) +" years,"+ period.get(MONTHS)+"  months and "+  period.get(DAYS) + " days";
 		  
 	  }
 	  

@@ -13,5 +13,7 @@ public class ResponseDto {
 	
 	private String bondingTime;
 	
+	private Integer age;
+	
 
 }
